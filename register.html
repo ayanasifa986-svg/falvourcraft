@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlavorCraft/Coustem/Recipe/Register</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <div class="menu">
+        <a href="indxex.html" class="logo-link"><h1>🍳 FlavorCraft</h1></a>
+        <a href="indxex.html" class="home">Home</a>
+        <a href="recipe.html" class="recipe">Recipe</a>
+        <a href="about.html" class="about">About</a>
+        <a href="contact.html" class="contact">Contact</a>
+        <a href="coustem.html" class="coustem">Custom recipes</a> 
+    </div>
+
+    <!-- Register Form -->
+    <div class="form-container" id="registration-form">
+        <div class="form-card">
+            <h2>Create Your Account</h2>
+            <form id="registerForm" action="google.com"  >
+                <div class="form-group">
+                    <label for="firstName"> Name:</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                    <span></span> <i class="fa-solid " id="name-icon" ></i>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required>
+                    <span></span> <i class="fa-solid " id="email-icon" ></i>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required minlength="6">
+                    <span></span> <i class="fa-solid " id="password-icon" ></i>
+                    <i class="fa-solid fa-eye" id="fa-eye" ></i>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <span id="conform-Password-span" ></span> <i class="fa-solid " id="conform-Password-icon" ></i>
+                    <i class="fa-solid fa-eye" id="fa-eye-" ></i>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" onclick="alert('Terms and Conditions will be displayed here')">Terms and Conditions</a>
+                    </label>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-cancel" id="buttons">Cancel</button>
+                    <button type="button" class="btn btn-submit" id="button" >Register</button>
+                </div>
+                <div class="form-footer">
+                    <p>Already have an account? <a href="login.html">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+<div class="footer-links">
+    <div class="footer-section">
+        <h4>🍳 FlavorCraft</h4>
+        <p>Discover amazing recipes from around the world</p>
+    </div>
+    <div class="footer-section">
+        <h4>Quick Links</h4>
+        <a href="indxex.html">🏠 Home</a>
+        <a href="recipe.html">📚 All Recipes</a>
+        <a href="about.html">ℹ️ About Us</a>
+        <a href="contact.html">📞 Contact</a>
+        <a href="coustem.html">👨‍🍳 Custom Recipes</a>
+    </div>
+    <div class="footer-section">
+        <h4>Recipe Categories</h4>
+        <a href="breakfast.html">🌅 Breakfast</a>
+        <a href="lunch.html">🌞 Lunch</a>
+        <a href="dinner.html">🌙 Dinner</a>
+        <a href="dsert.html">🍰 Dessert</a>
+    </div>
+    <div class="footer-section">
+        <h4>Popular Recipes</h4>
+        <a href="pasta.html">🍝 Pasta</a>
+        <a href="cake.html">🎂 Cake</a>
+        <a href="salad.html">🥗 Salad</a>
+        <a href="chiken.html">🍗 Chicken</a>
+    </div>
+    <div class="footer-section">
+        <h4>Connect With Us</h4>
+        <a href="mailto:hello@flavorcraft.com">📧 Email Us</a>
+        <a href="tel:+923296993831">📱 Call Us</a>
+        <a href="https://www.facebook.com/profile.php?id=61580171736629" target="_blank">📘 Facebook</a>
+        <a href="https://instagram.com/flavorcraft_recipes" target="_blank">📷 Instagram</a>
+    </div>
+</div>
+    <script src="script.js"> </script>
+</body>
+</html>

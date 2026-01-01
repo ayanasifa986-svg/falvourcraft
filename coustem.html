@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlavorCraft/coustem/Recipe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="menu-1">
+    <a href="indxex.html" class="logo-link"><h1>🍳 FlavorCraft</h1></a>
+    <a href="indxex.html" class="home">Home</a>
+    <a href="recipe.html" class="recipe">Recipe</a>
+    <a href="about.html" class="about">About</a>
+    <a href="contact.html" class="contact">Contact</a>
+    <a href="coustem.html" class="coustem-">Custom recipes</a>
+</div>
+<!-- Login, Register and Logout Buttons -->
+<div class="auth-buttons-section" id="authButtons">
+    <a href="login.html" class="auth-btn login-btn">
+        <span class="btn-icon">🔑</span>
+        <span class="btn-text">Login</span>
+    </a>
+    <a href="register.html" class="auth-btn register-btn">
+        <span class="btn-icon">📝</span>
+        <span class="btn-text">Register</span>
+    </a>
+    <a href="#" class="auth-btn logout-btn" id="logoutBtn" onclick="logout()" style="display: none;">
+        <span class="btn-icon">🚪</span>
+        <span class="btn-text">Logout</span>
+    </a>
+</div>
+
+<!-- Add Recipe Button -->
+<div class="add-recipe-section">
+    <a href="#" class="add-recipe-btn" id="addRecipeBtn" onclick="checkLoginAndAddRecipe(event)">
+        <span class="btn-icon">+</span>
+        <span class="btn-text">Add New Recipe</span>
+    </a>
+</div>
+
+
+<!-- Container for displaying submitted recipes -->
+<div class="recipes-container" id="recipesContainer">
+    <!-- Recipes will be dynamically added here -->
+</div> 
+<div class="footer-links">
+    <div class="footer-section">
+        <h4>🍳 FlavorCraft</h4>
+        <p>Discover amazing recipes from around the world</p>
+    </div>
+    <div class="footer-section">
+        <h4>Quick Links</h4>
+        <a href="indxex.html">🏠 Home</a>
+        <a href="recipe.html">📚 All Recipes</a>
+        <a href="about.html">ℹ️ About Us</a>
+        <a href="contact.html">📞 Contact</a>
+        <a href="coustem.html">👨‍🍳 Custom Recipes</a>
+    </div>
+    <div class="footer-section">
+        <h4>Recipe Categories</h4>
+        <a href="breakfast.html">🌅 Breakfast</a>
+        <a href="lunch.html">🌞 Lunch</a>
+        <a href="dinner.html">🌙 Dinner</a>
+        <a href="dsert.html">🍰 Dessert</a>
+    </div>
+    <div class="footer-section">
+        <h4>Popular Recipes</h4>
+        <a href="pasta.html">🍝 Pasta</a>
+        <a href="cake.html">🎂 Cake</a>
+        <a href="salad.html">🥗 Salad</a>
+        <a href="chiken.html">🍗 Chicken</a>
+    </div>
+    <div class="footer-section">
+        <h4>Connect With Us</h4>
+        <a href="mailto:ayanasifa986@gmail.com">📧 Email Us</a>
+        <a href="tel:+923296993831">📱 Call Us</a>
+        <a href="https://www.facebook.com/profile.php?id=61580171736629" target="_blank">📘 Facebook</a>
+        <a href="https://www.instagram.com/ayanasifa986/" target="_blank">📷 Instagram</a>
+    </div>
+</div>
+
+<script>
+// Function to load and display recipes
+function loadRecipes() {
+    const recipes = JSON.parse(localStorage.getItem('customRecipes') || '[]');
+    const container = document.getElementById('recipesContainer');
+    
+    if (recipes.length === 0) {
+        container.innerHTML = '<p class="no-recipes">No custom recipes yet. Click the + button above to add your first recipe!</p>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    
+    // Get current user's email
+    const sessionData = localStorage.getItem('userSession') || sessionStorage.getItem('userSession');
+    const currentUserEmail = sessionData ? JSON.parse(sessionData).email : null;
+    
+    recipes.forEach(recipe => {
+        const recipeCard = document.createElement('div');
+        recipeCard.className = 'recipe-card';
+        
+        // Check if current user owns this recipe
+        const isOwner = currentUserEmail && recipe.userEmail === currentUserEmail;
+        
+        recipeCard.innerHTML = `
+            <div class="recipe-header">
+                <h3>${recipe.recipeInfo.emoji} ${recipe.recipeInfo.name}</h3>
+                <span class="recipe-author">by ${recipe.personalInfo.firstName} ${recipe.personalInfo.lastName}</span>
+                ${isOwner ? '<span class="recipe-owner-badge">Your Recipe</span>' : ''}
+            </div>
+            <div class="recipe-details">
+                <div class="cooking-time">⏱️ ${recipe.recipeInfo.cookingTime} minutes</div>
+                <div class="recipe-date">📅 ${recipe.dateCreated}</div>
+            </div>
+            <div class="recipe-content" id="content-${recipe.id}" style="display: none;">
+                <div class="ingredients-section">
+                    <h4>Ingredients:</h4>
+                    <p>${recipe.recipeInfo.ingredients}</p>
+                </div>
+                <div class="instructions-section">
+                    <h4>Instructions:</h4>
+                    <p>${recipe.recipeInfo.instructions}</p>
+                </div>
+            </div>
+            <div class="recipe-actions">
+                <button class="expand-btn" onclick="toggleRecipeContent(${recipe.id})" id="btn-${recipe.id}">
+                    <span class="btn-text">Show Details</span>
+                    <span class="btn-icon">▼</span>
+                </button>
+                ${isOwner ? `<button class="delete-recipe-btn" onclick="deleteRecipe(${recipe.id})">Delete Recipe</button>` : ''}
+            </div>
+        `;
+        container.appendChild(recipeCard);
+    });
+}
+
+// Function to toggle recipe content visibility
+function toggleRecipeContent(recipeId) {
+    const content = document.getElementById(`content-${recipeId}`);
+    const button = document.getElementById(`btn-${recipeId}`);
+    const btnText = button.querySelector('.btn-text');
+    const btnIcon = button.querySelector('.btn-icon');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        btnText.textContent = 'Hide Details';
+        btnIcon.textContent = '▲';
+        button.classList.add('expanded');
+    } else {
+        content.style.display = 'none';
+        btnText.textContent = 'Show Details';
+        btnIcon.textContent = '▼';
+        button.classList.remove('expanded');
+    }
+}
+
+// Function to delete a recipe
+function deleteRecipe(recipeId) {
+    // Get current user's email
+    const sessionData = localStorage.getItem('userSession') || sessionStorage.getItem('userSession');
+    const currentUserEmail = sessionData ? JSON.parse(sessionData).email : null;
+    
+    if (!currentUserEmail) {
+        alert('You must be logged in to delete recipes.');
+        return;
+    }
+    
+    // Find the recipe to check ownership
+    const recipes = JSON.parse(localStorage.getItem('customRecipes') || '[]');
+    const recipe = recipes.find(r => r.id === recipeId);
+    
+    if (!recipe) {
+        alert('Recipe not found.');
+        return;
+    }
+    
+    if (recipe.userEmail !== currentUserEmail) {
+        alert('You can only delete your own recipes.');
+        return;
+    }
+    
+    if (confirm('Are you sure you want to delete this recipe?')) {
+        const updatedRecipes = recipes.filter(r => r.id !== recipeId);
+        localStorage.setItem('customRecipes', JSON.stringify(updatedRecipes));
+        loadRecipes(); // Reload the display
+    }
+}
+
+// Check if user is logged in
+function checkLoginStatus() {
+    const sessionData = localStorage.getItem('userSession') || sessionStorage.getItem('userSession');
+    if (sessionData) {
+        // Hide login/register buttons and show logout button
+        document.querySelector('.login-btn').style.display = 'none';
+        document.querySelector('.register-btn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'flex';
+        document.getElementById('addRecipeBtn').onclick = function() { window.location.href = 'coustemform.html'; };
+        return true;
+    } else {
+        // Show login/register buttons and hide logout button
+        document.querySelector('.login-btn').style.display = 'flex';
+        document.querySelector('.register-btn').style.display = 'flex';
+        document.getElementById('logoutBtn').style.display = 'none';
+        return false;
+    }
+}
+
+// Check login before adding recipe
+function checkLoginAndAddRecipe(event) {
+    event.preventDefault();
+    if (checkLoginStatus()) {
+        window.location.href = 'coustemform.html';
+    } else {
+        alert('Please login or register first to add recipes!');
+        // Optionally redirect to login page
+        // window.location.href = 'login.html';
+    }
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('userSession');
+    sessionStorage.removeItem('userSession');
+    location.reload();
+}
+
+// Load recipes when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadRecipes();
+    checkLoginStatus();
+});
+</script>
+
+</body>
+</html>
